@@ -64,10 +64,20 @@ model = KerasClassifier(build_fn=create_model,
                              batch_size=best_batch_size,
                              verbose=verbose)
 
-model.fit(X, y, )
+model.fit(X, y)
+
+# Check predictions
+pred = model.predict(X)
+diff = pred - y
+
+
+v = (diff == 0).astype(int).sum()/len(diff)
+print(v.values)
+
+# Predict with test data
 predictions = model.predict(X_test)
 
-
+# Format for submission
 submission = pd.DataFrame({
     'PassengerId': test.index,
     'Survived': predictions[:,0],
@@ -76,5 +86,4 @@ submission = pd.DataFrame({
 
 submission.sort_values('PassengerId', inplace=True)
 submission.to_csv("run1.csv", index=False)
-
 
